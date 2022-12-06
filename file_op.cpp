@@ -12,12 +12,40 @@ ios::trunc 	If a file exists, the file elements should be truncated prior to its
 using namespace std;
 int main(int argc,char* argv[]) {
 	if(argc<2){
-		cout << "\n Insufficient arguments. Check usage \n";
+		cout << "Insufficient arguments. Check usage \n";
+		// ./file_op <filename to read from / write to> <-r|-w> <block_size>
 	}
-	string s = argv[1]; // first argument - file to write into / read from
+	string path = argv[1]; // first argument - file to write into / read from
 	char op = argv[2][1]; // second argument - read / write flag ( -r | -w)
 
 
+	if(!op || (op!='r' || op!='w')) op = 'r';
+
+	if(op == 'r') {
+		// reading from file
+		int block_size = argv[3];
+		if(!block_size || block_size < 0) block_size = 512;
+
+		fstream my_file;
+		my_file.open(path, ios::in);
+		if (!my_file) {
+			cout << "No such file";
+		}
+		else {
+			cout<< "File opened!! \n";
+			char ch;
+			while (1) {
+				my_file >> ch;
+				if (my_file.eof())
+					break;
+				cout << ch;
+			}
+			cout << "\n";
+		}
+		my_file.close();
+	}
+
+return 0;
 }
 // int main(int argc,char* argv[]) {
 // 	fstream my_file;
