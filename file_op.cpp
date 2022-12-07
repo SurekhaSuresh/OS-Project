@@ -23,22 +23,39 @@ int main(int argc,char* argv[]) {
 
 	if(op == 'r') {
 		// reading from file
-		int block_size = argv[3];
+		int block_size = atoi(argv[3]);
 		if(!block_size || block_size < 0) block_size = 512;
 
 		fstream my_file;
 		my_file.open(path, ios::in);
+		cout << "\n Block size is " << block_size << "\n";
+
+	    char memblock[block_size];
+	    memblock[block_size-1] =  '\0';
+
+	    int p = 0;
+	    
 		if (!my_file) {
 			cout << "No such file";
 		}
+		
 		else {
+			
 			cout<< "File opened!! \n";
-			char ch;
-			while (1) {
-				my_file >> ch;
-				if (my_file.eof())
+			my_file.seekg(p);
+
+			while(1){
+
+				// ISSUE: Some junk character at the end HACK : that's why block_size-1 to prevent print junk character
+				my_file.read(memblock, block_size-1); 
+				
+				if(my_file.eof()){
+					string s(memblock, my_file.gcount());
+					cout << s << "\n";
 					break;
-				cout << ch;
+				}
+
+				cout << memblock;
 			}
 			cout << "\n";
 		}
@@ -47,50 +64,3 @@ int main(int argc,char* argv[]) {
 
 return 0;
 }
-// int main(int argc,char* argv[]) {
-// 	fstream my_file;
-// 	my_file.open("my_file", ios::out);
-// 	if (!my_file) {
-// 		cout << "File not created!";
-// 	}
-// 	else {
-// 		cout << "File created successfully!\n";
-// 		my_file.close(); 
-// 	}
-// 	return 0;
-// 	/* 
-// 	// writing
-// 	fstream my_file;
-// 	my_file.open("my_file.txt", ios::out);
-// 	if (!my_file) {
-// 		cout << "File not created!";
-// 	}
-// 	else {
-// 		cout << "File created successfully!";
-// 		my_file << "Guru99";
-// 		my_file.close();
-// 	}
-// 	return 0;
-
-// 	// reading from file
-// 	fstream my_file;
-// 	my_file.open("my_file.txt", ios::in);
-// 	if (!my_file) {
-// 		cout << "No such file";
-// 	}
-// 	else {
-// 		char ch;
-
-// 		while (1) {
-// 			my_file >> ch;
-// 			if (my_file.eof())
-// 				break;
-
-// 			cout << ch;
-// 		}
-
-// 	}
-// 	my_file.close();
-// 	return 0;
-// 	*/
-// }
