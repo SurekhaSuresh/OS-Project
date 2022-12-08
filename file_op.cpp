@@ -23,11 +23,29 @@ int main(int argc,char* argv[]) {
 
 	if(op == 'r') {
 		// reading from file
-		int block_size = atoi(argv[3]);
+		int block_size = atoi(argv[3]); // mandatory param while reading
 		if(!block_size || block_size < 0) block_size = 512;
+		int block_count = 1;
+		if(argv[4]) block_count = atoi(argv[4]);
 
 		fstream my_file;
 		my_file.open(path, ios::in);
+
+		const auto begin = my_file.tellg();
+		my_file.seekg (0, ios::end);
+		const auto end = my_file.tellg();
+		const auto fsize = (end-begin);
+
+
+		if(argv[4]) {
+			if(fsize < block_size*block_count){
+				cout << "\n File not big enough \n";
+				return 0;
+			}
+		}
+
+		cout << "\n File size "<< fsize << "\n";
+
 		cout << "\n Block size is " << block_size << "\n";
 
 	    char memblock[block_size];
@@ -41,7 +59,7 @@ int main(int argc,char* argv[]) {
 		
 		else {
 			
-			cout<< "File opened!! \n";
+			cout << " File opened!! \n";
 			my_file.seekg(p);
 
 			while(1){
