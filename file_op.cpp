@@ -35,16 +35,16 @@ int main(int argc,char* argv[]) {
 		my_file.open(path, ios::in);
 
 	
-		// if(argv[4]) {
-		// 	const auto begin = my_file.tellg();
-		// 	my_file.seekg (0, ios::end);
-		// 	const auto end = my_file.tellg();
-		// 	const auto fsize = (end-begin);
-		// 	if(fsize < block_size*block_count){
-		// 		cout << "\n File not big enough \n";
-		// 		return 0;
-		// 	}
-		// }
+		if(argv[4]) {
+			const auto begin = my_file.tellg();
+			my_file.seekg (0, ios::end);
+			const auto end = my_file.tellg();
+			const auto fsize = (end-begin);
+			if(fsize < block_size*block_count){
+				cout << "\n File not big enough \n";
+				return 0;
+			}
+		}
 
 		// cout << "\n File size "<< fsize << "\n";
 
