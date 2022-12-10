@@ -28,24 +28,25 @@ int main(int argc,char* argv[]) {
 		int block_size = atoi(argv[3]); // mandatory param while reading
 		if(!block_size || block_size < 0) block_size = 512;
 		int block_count = 1;
+		int block_count_counter = 0;
 		if(argv[4]) block_count = atoi(argv[4]);
 
 		fstream my_file;
 		my_file.open(path, ios::in);
 
 	
-		if(argv[4]) {
-			const auto begin = my_file.tellg();
-			my_file.seekg (0, ios::end);
-			const auto end = my_file.tellg();
-			const auto fsize = (end-begin);
-			if(fsize < block_size*block_count){
-				cout << "\n File not big enough \n";
-				return 0;
-			}
-		}
+		// if(argv[4]) {
+		// 	const auto begin = my_file.tellg();
+		// 	my_file.seekg (0, ios::end);
+		// 	const auto end = my_file.tellg();
+		// 	const auto fsize = (end-begin);
+		// 	if(fsize < block_size*block_count){
+		// 		cout << "\n File not big enough \n";
+		// 		return 0;
+		// 	}
+		// }
 
-		cout << "\n File size "<< fsize << "\n";
+		// cout << "\n File size "<< fsize << "\n";
 
 		cout << "\n Block size is " << block_size << "\n";
 
@@ -67,8 +68,9 @@ int main(int argc,char* argv[]) {
 
 				// ISSUE: Some junk character at the end HACK : that's why block_size-1 to prevent print junk character
 				my_file.read(memblock, block_size-1); 
-				
-				if(my_file.eof()){
+				block_count_counter += 1;
+
+				if(my_file.eof() || block_count == block_count_counter){
 					string s(memblock, my_file.gcount());
 					cout << s << "\n";
 					break;
